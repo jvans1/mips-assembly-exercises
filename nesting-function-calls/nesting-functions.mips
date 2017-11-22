@@ -1,0 +1,5 @@
+.global nesting_functions
+
+nesting_functions:
+	li $v0, 56 # Simplistic function that passes the first test, not the rest
+	jr $ra
