@@ -11,6 +11,7 @@
 
 binary_convert:
   li $v0, 1    # Simplistic solution that passes 2 tests
-  lbu $t0, 0($a0)
-  and $v0, $v0, $t0
+  move $t0, $a0 #copy word out of argument register
+  lbu $t1, 0($t0) #copy first byte from word
+  and $v0, $v0, $t1 #determine if last bit is 1 and add to solution
   jr $ra
