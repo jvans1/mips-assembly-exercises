@@ -1,5 +1,34 @@
 .global fibonacci
 
+#fib(n) = 
+#	| n == 1  = 1
+#	| n == 1  = 1
+# | otherwise = fib(n -2) + fib(n - 1)
 fibonacci:
-    li $v0, 1  # simplistic version that passes first two tests...
-    jr $ra
+	addi $sp, $sp, 12 #incrememnt stack pointer
+	beq $a0, $zero, zero #fib(0)
+	beq $a0, 1, one  #fib(1)
+	sw $ra, 0($sp) #store return address of caller on the stack
+	sw $a0, 4($sp) #store current value of n on the stack
+	subi $a0, $a0, 1 #decrement argument by 1
+	jal fibonacci #call fibonacci with n - 1
+	sw $v0, 8($sp) #store previous solution as the second value on the stack
+	lw $a0, 4($sp) #load previous argument of n
+	subi $a0, $a0, 2 #store n - 2 as argument
+	jal fibonacci #call fibonacci with n - 2
+	lw $t0, 8($sp) #load solution of fib from n - 1 call
+	addu	$v0, $v0, $t0 #add fib(n - 2) with fib(n - 1)
+	lw $ra, 0($sp) #re-populate return address of calling function
+	subi $sp, $sp, 12 #pop the stack
+	jr $ra
+
+zero:
+	li $v0, 1 #fib(0) = 1, set return register to 1
+	subi $sp, $sp, 12
+	jr $ra #jump to return address(up one stack frame)
+	
+	
+one:
+	li $v0, 1 #fib(1) = 1, set return register to 1
+	subi $sp, $sp, 12
+	jr $ra #jump to return address(up one stack frame)
