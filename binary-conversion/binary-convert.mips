@@ -10,8 +10,20 @@
 # 0000 0000 | 0000 0001
 
 binary_convert:
-  li $v0, 1    # Simplistic solution that passes 2 tests
-  move $t0, $a0 #copy word out of argument register
+  li $t2, 1    #start with 1 in solutions register
+  move $v0, $zero #zero out solutions register
+  move $t0, $a0 #copy word address out of argument register
   lbu $t1, 0($t0) #copy first byte from word
-  and $v0, $v0, $t1 #determine if last bit is 1 and add to solution
+  and $t2, $t2, $t1 #determine if last bit is 1
+  or $v0, $v0, $t2 #add bit to solution
+  lbu $t1, 1($t0) #copy second byte from word
+  beq $zero, $t1, exit #exit if second byte is null
+  sll $v0, $v0, 1
+  li $t2, 1
+  and $t2, $t2, $t1 #determine if last bit is 1
+  or $v0, $v0, $t2
+  jr $ra
+  
+  
+exit:
   jr $ra
