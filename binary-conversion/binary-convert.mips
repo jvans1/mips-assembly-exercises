@@ -6,8 +6,8 @@
 #check for null byte
 #incremenent byte offset
 #repeat
-loop: 
-	li $t2, 1   #temp register to check against last bit of next character
+loop:
+  li $t2, 1   #temp register to check against last bit of next character
   lbu $t1, 0($t0) #copy first byte from word
   and $t2, $t2, $t1 #determine if last bit is 1
   or $t3, $t3, $t2 #add bit to solution
@@ -16,13 +16,12 @@ loop:
   beq $zero, $t1, exit #exit if second byte is null
   sll $t3, $t3, 1 #move bit over
   j loop
-  
+
 binary_convert:
   move $t3, $zero #zero out solutions register
   move $t0, $a0 #copy word address out of argument register
   j loop
-  
-  
+
 exit:
-	move $v0, $t3
+  move $v0, $t3
   jr $ra
